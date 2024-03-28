@@ -24,7 +24,7 @@ public class LoginPage {
     }
 
     public void enter(){
-      //  $(By.xpath("/html/body/div[11]/div[5]/div[2]/div[1]/div/div/div/div[2]/div[3]/div[3]/div/div/main/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[1]/form/div[4]/input")).click();
+        $(By.xpath("/html/body/div[11]/div[5]/div[2]/div[1]/div/div/div/div[2]/div[3]/div[3]/div/div/main/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[1]/form/div[4]/input")).click();
     }
 
 }

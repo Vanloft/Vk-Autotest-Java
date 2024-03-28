@@ -14,7 +14,6 @@ abstract public class BaseTest {
     public void setUp() {
         Configuration.baseUrl = BASE_URL;
         Configuration.browser = "chrome";
-        Configuration.headless = true;
     }
 
     public void authenticate(){
