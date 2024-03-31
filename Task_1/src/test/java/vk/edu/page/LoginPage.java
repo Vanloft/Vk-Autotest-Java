@@ -2,29 +2,40 @@ package vk.edu.page;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class LoginPage {
+public class LoginPage{
 
-    private final SelenideElement fieldEmail = $(By.name("st.email"));
-    private final SelenideElement fieldPasswd = $(By.name("st.password"));
+    private static final SelenideElement FIELD_EMAIL = $(By.name("st.email"));
+    private static final SelenideElement FIELD_PASSWD = $(By.name("st.password"));
+    private static final SelenideElement BUTTON_LOGIN = $(By.xpath(".//div/input[@value='Войти в Одноклассники']"));
     public LoginPage(String url){
         Selenide.open(url);
+        checkLoginPage();
     }
 
-    public void clickOnFieldEmail(String email){
-        fieldEmail.click();
-        fieldEmail.setValue(email);
+    public void setValueOnFieldEmail(String email){
+        FIELD_EMAIL.click();
+        FIELD_EMAIL.setValue(email);
     }
-    public void clickOnFieldPassword(String password){
-        fieldPasswd.click();
-        fieldPasswd.setValue(password);
+    public void setValueOnFieldPassword(String password){
+        FIELD_PASSWD.click();
+        FIELD_PASSWD.setValue(password);
     }
 
     public void enter(){
-        $(By.xpath("/html/body/div[11]/div[5]/div[2]/div[1]/div/div/div/div[2]/div[3]/div[3]/div/div/main/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[1]/form/div[4]/input")).click();
+        BUTTON_LOGIN.click();
+    }
+
+    @Test
+    public void checkLoginPage(){
+        FIELD_EMAIL.shouldBe(visible.because("Не найдено поле email"));
+        FIELD_PASSWD.shouldBe(visible.because("Не найдено поле password"));
+        BUTTON_LOGIN.shouldBe(visible.because("Нет кнопки входа на страничку"));
     }
 
 }

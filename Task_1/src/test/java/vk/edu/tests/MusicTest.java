@@ -12,18 +12,8 @@ public class MusicTest  extends BaseTest{
     @Test
     public void checkMusic(){
         MusicPage musicPage = new MusicPage();
-        $x("//*[@id=\"music_layer\"]/header/wm-player/wm-player-controls/button[3]").click();
-        Assertions.assertTrue($x("//*[@id='music_layer']/header/wm-player/wm-player-controls/button[3]").isDisplayed());
+        $x("//button[@class='play __active']").click();
         sleep(5000);
+        Assertions.assertTrue($x("//button[@class='pause __active']").isDisplayed());
     }
-   /* @Test
-    public void checkSearchMusic(){
-        SelenideElement search = $x("//*[@id='music_layer']/header/div/wm-search-form/wm-search-input");
-        search.click();
-        search.setValue("Поезда");
-        search.pressEnter();
-        $x("//*[@id='music_layer']/main/div/div[2]/div/search-page/wm-portlet/slot/wm-tracks-list/main/wm-track[4]/slot[1]/wm-track-play-button/button/wm-play-control/wm-icon").click();
-        Assertions.assertTrue($x("//*[@id='music_layer']/header/wm-player/div/button/wm-card-details/slot[1]/div/span//*[text()='Поезда']").isDisplayed());
-        sleep(50000);
-    }*/
 }

@@ -23,7 +23,6 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-  testImplementation('org.slf4j:slf4j-simple:2.0.12')
   testImplementation('com.codeborne:selenide:7.2.2')
   testImplementation("io.qameta.allure:allure-selenide:${allureVersion}")
   testImplementation('org.assertj:assertj-core:3.23.1')
