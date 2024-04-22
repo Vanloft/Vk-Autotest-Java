@@ -3,39 +3,48 @@ package vk.edu.page;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 
+import java.util.NoSuchElementException;
+
+import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
-public class LoginPage{
+public class LoginPage {
+    private static final String BASE_LOGIN = "technopol41";
+    private static final String BASE_PASSWORD = "technopolisPassword";
+    private static final SelenideElement FIELD_EMAIL = $x(".//input[@name='st.email']");
+    private static final SelenideElement FIELD_PASSWD = $x(".//input[@name='st.password']");
+    private static final SelenideElement BUTTON_LOGIN = $x(".//div/input[@value='Войти в Одноклассники']");
+    private static final SelenideElement RED_SUBSCRIPT= $x(".//div[@class='input-e login_error']");
 
-    private static final SelenideElement FIELD_EMAIL = $(By.name("st.email"));
-    private static final SelenideElement FIELD_PASSWD = $(By.name("st.password"));
-    private static final SelenideElement BUTTON_LOGIN = $(By.xpath(".//div/input[@value='Войти в Одноклассники']"));
-    public LoginPage(String url){
+    public LoginPage(String url) {
         Selenide.open(url);
         checkLoginPage();
     }
 
-    public void setValueOnFieldEmail(String email){
-        FIELD_EMAIL.click();
-        FIELD_EMAIL.setValue(email);
-    }
-    public void setValueOnFieldPassword(String password){
-        FIELD_PASSWD.click();
-        FIELD_PASSWD.setValue(password);
+    public LoginPage() {
+        checkLoginPage();
+        authenticate(BASE_LOGIN, BASE_PASSWORD);
     }
 
-    public void enter(){
-        BUTTON_LOGIN.click();
+    public void authenticate(String email, String password) {
+        FIELD_EMAIL.shouldBe(visible).click();
+        FIELD_EMAIL.setValue(email);
+        FIELD_PASSWD.shouldBe(visible).click();
+        FIELD_PASSWD.setValue(password);
+        BUTTON_LOGIN.shouldBe(visible).click();
+    }
+
+    public String checkRedSubscript() throws NoSuchElementException {
+        return RED_SUBSCRIPT.getText();
     }
 
     @Test
-    public void checkLoginPage(){
-        FIELD_EMAIL.shouldBe(visible.because("Не найдено поле email"));
-        FIELD_PASSWD.shouldBe(visible.because("Не найдено поле password"));
-        BUTTON_LOGIN.shouldBe(visible.because("Нет кнопки входа на страничку"));
+    public void checkLoginPage() {
+        FIELD_EMAIL.shouldBe(exist.because("Не найдено поле email"));
+        FIELD_PASSWD.shouldBe(exist.because("Не найдено поле password"));
+        BUTTON_LOGIN.shouldBe(exist.because("Нет кнопки входа на страничку"));
     }
 
 }

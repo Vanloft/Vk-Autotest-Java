@@ -2,12 +2,20 @@ package vk.edu.tests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static com.codeborne.selenide.Selenide.$x;
+import vk.edu.page.LoginPage;
+import vk.edu.page.ProfilePage;
+
+import java.util.NoSuchElementException;
 
 public class LoginTest extends BaseTest{
-
     @Test
-    public void sucLogin(){
-        Assertions.assertTrue(($x(".//*[@id='hook_Block_Navigation']//*[@data-l='t,userPage']//*[text()='technopol41 technopol41']")).isDisplayed());
+    public void unsuccessLogin(){
+        String login = "mjvknerlw515+615";
+        String passwd = "jklvnwejkllvw564+645";
+        loginPage.authenticate(login, passwd);
+        Assertions.assertEquals("Неправильно указан логин и/или пароль", loginPage.checkRedSubscript(), "Отображается красный подстрочник согласно сообщению");
+        ProfilePage checkSuccess = new ProfilePage();
+        Assertions.assertTrue(checkSuccess.checkUser());
+
     }
 }
