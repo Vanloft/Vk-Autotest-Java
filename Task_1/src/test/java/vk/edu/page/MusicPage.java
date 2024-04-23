@@ -1,7 +1,6 @@
 package vk.edu.page;
 
 import com.codeborne.selenide.SelenideElement;
-import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
@@ -15,7 +14,7 @@ public class MusicPage {
     private static final SelenideElement PAUSE_BUTTON = $x("//button[@class='pause __active']");
     private static final SelenideElement MUSIC_BUTTON = $x("//*[@id='music_toolbar_button']");
     private static final SelenideElement FIELD_SEARCH_MUSIC = $x(".//input[@data-tsid='inner_input']");
-    private static final SelenideElement MUSIC_PLAYER_CONTROLS = $x(".//div[@class='toolbar-music-layer_offset-fix scroll-modal-indent']");
+    private static final SelenideElement MUSIC_MODAL = $x(".//music-layer[@id='music_layer']");
     private static final SelenideElement NAVIGATION_MUSIC_MENU = $x(".//div[@class='content-container']");
     private static final SelenideElement PLAY_PROGRESS = $x(".//wm-player-duration[@data-l='t,player']");
     private static final SelenideElement SEARCH_FIELD = $x(".//input[@data-tsid='inner_input']");
@@ -30,6 +29,7 @@ public class MusicPage {
 
     public void setPlayButton() {
         PLAY_BUTTON.click();
+        sleep(5000);
     }
 
     public boolean checkPauseButton() {
@@ -48,10 +48,9 @@ public class MusicPage {
         return CHECK_SPAN_ARTIST.getText();
     }
 
-    @Test
     public void checkMusicPage() {
         FIELD_SEARCH_MUSIC.shouldBe(visible.because("Отсутствует поле для поиска музыки"));
-        MUSIC_PLAYER_CONTROLS.shouldBe(exist.because("Нет панели управления мультимедией"));
+        MUSIC_MODAL.shouldBe(exist.because("Нет панели управления мультимедией"));
         NAVIGATION_MUSIC_MENU.shouldBe(exist.because("Отсутствует навигационная панель раздела музыки"));
     }
 }

@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import vk.edu.page.MusicPage;
 
-public class SearchMusicTest extends BaseTest{
+public class SearchMusicTest extends BaseTest {
     @Test
-    public void checkSearchMusic(){
+    public void checkSearchMusic() {
         MusicPage musicPage = new MusicPage();
         String nameSong = "Поезда";
         String artist = "Женя Трофимов";

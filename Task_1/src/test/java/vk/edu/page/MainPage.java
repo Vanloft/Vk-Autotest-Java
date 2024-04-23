@@ -11,7 +11,7 @@ public class MainPage {
 
     private final static SelenideElement UPLOAD_PHOTO = $x(".//input[@class='html5-upload-link']");
     private final static SelenideElement POST_BUTTON = $x(".//button[@class='dropdown-button__qx55h']");
-    private final static SelenideElement NAVBAR_MAIN_PAGE = $x(".//div[@class='nav-side __navigation __user-main']");
+    private final static SelenideElement NAVBAR_MAIN_PAGE = $x("//nav[@role='navigation']");
     private final static SelenideElement PROFILE_FUNCTIONS = $x("//button[@aria-label='Настройки профиля']");
     private final static SelenideElement FIRST_LOG_OUT_BUTTON = $x(".//div/a[@data-l='t,logout']");
     private final static SelenideElement SECOND_LOG_OUT_BUTTON = $x(".//div/input[@data-l='t,logout']");
@@ -31,8 +31,6 @@ public class MainPage {
         SECOND_LOG_OUT_BUTTON.shouldBe(visible).click();
     }
 
-
-    @Test
     public void checkMainPage() {
         UPLOAD_PHOTO.shouldBe(exist.because("Нет блока ссылки на загрузку фото с главной страницы"));
         POST_BUTTON.shouldBe(exist.because("Нет кнопки публикации на главной странице"));

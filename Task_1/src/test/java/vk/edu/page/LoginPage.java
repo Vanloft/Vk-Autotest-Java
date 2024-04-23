@@ -16,7 +16,7 @@ public class LoginPage {
     private static final SelenideElement FIELD_EMAIL = $x(".//input[@name='st.email']");
     private static final SelenideElement FIELD_PASSWD = $x(".//input[@name='st.password']");
     private static final SelenideElement BUTTON_LOGIN = $x(".//div/input[@value='Войти в Одноклассники']");
-    private static final SelenideElement RED_SUBSCRIPT= $x(".//div[@class='input-e login_error']");
+    private static final SelenideElement RED_SUBSCRIPT = $x(".//div[@class='input-e login_error']");
 
     public LoginPage(String url) {
         Selenide.open(url);
@@ -40,7 +40,6 @@ public class LoginPage {
         return RED_SUBSCRIPT.getText();
     }
 
-    @Test
     public void checkLoginPage() {
         FIELD_EMAIL.shouldBe(exist.because("Не найдено поле email"));
         FIELD_PASSWD.shouldBe(exist.because("Не найдено поле password"));
