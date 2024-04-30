@@ -15,7 +15,7 @@ public class MusicPage {
     private static final SelenideElement PAUSE_BUTTON = $x("//button[@class='pause __active']");
     private static final SelenideElement MUSIC_BUTTON = $x("//*[@id='music_toolbar_button']");
     private static final SelenideElement FIELD_SEARCH_MUSIC = $x(".//input[@data-tsid='inner_input']");
-    private static final SelenideElement MUSIC_PLAYER_CONTROLS = $x(".//div[@class='toolbar-music-layer_offset-fix scroll-modal-indent']");
+    private static final SelenideElement MUSIC_MODAL = $x(".//music-layer[@id='music_layer']");
     private static final SelenideElement NAVIGATION_MUSIC_MENU = $x(".//div[@class='content-container']");
     private static final SelenideElement PLAY_PROGRESS = $x(".//wm-player-duration[@data-l='t,player']");
     private static final SelenideElement SEARCH_FIELD = $x(".//input[@data-tsid='inner_input']");
@@ -33,9 +33,9 @@ public class MusicPage {
         PLAY_BUTTON.click();
     }
 
-    public boolean checkPauseButton() {
-        sleep(5000);
-        return PAUSE_BUTTON.isDisplayed();
+    public boolean checkPauseButton(){
+        sleep(1000);
+         return PAUSE_BUTTON.isDisplayed();
     }
 
     public double checkTimeForPlay() {
@@ -47,13 +47,12 @@ public class MusicPage {
         SEARCH_FIELD.setValue(nameSong + ' ' + artist);
         SEARCH_FIELD.pressEnter();
         FIRST_PLAYBUTTON_ON_A_LIST.shouldBe(exist).click();
-        sleep(10000);
         return CHECK_SPAN_ARTIST.getText();
     }
 
     public void checkMusicPage() {
         FIELD_SEARCH_MUSIC.shouldBe(visible.because("Отсутствует поле для поиска музыки"));
-        MUSIC_PLAYER_CONTROLS.shouldBe(exist.because("Нет панели управления мультимедией"));
+        MUSIC_MODAL.shouldBe(exist.because("Нет панели управления мультимедией"));
         NAVIGATION_MUSIC_MENU.shouldBe(exist.because("Отсутствует навигационная панель раздела музыки"));
     }
 }
