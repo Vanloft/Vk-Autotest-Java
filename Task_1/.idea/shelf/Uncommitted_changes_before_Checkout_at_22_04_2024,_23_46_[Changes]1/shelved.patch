@@ -1,0 +1,471 @@
+Index: src/test/java/vk/edu/tests/SearchMusicTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.tests;\n\nimport com.codeborne.selenide.SelenideElement;\nimport org.junit.jupiter.api.Assertions;\nimport org.junit.jupiter.api.Test;\nimport vk.edu.page.MusicPage;\n\nimport static com.codeborne.selenide.Selenide.$x;\nimport static com.codeborne.selenide.Selenide.sleep;\n\npublic class SearchMusicTest extends BaseTest{\n    @Test\n    public void checkSearchMusic(){\n        MusicPage musicPage = new MusicPage();\n        SelenideElement search = $x(\".//input[@data-tsid='inner_input']\");\n        search.click();\n        search.setValue(\"Поезда\");\n        search.pressEnter();\n        $x(\".//button[@data-payload='artistName=Женя Трофимов']\").click();\n        //sleep(49000); //если не хочется слушать\n        sleep(80000);\n        $x(\"//button[@class='pause __active']\").click();\n        Assertions.assertTrue($x(\".//span[@title='Поезда']\").isDisplayed());\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/tests/SearchMusicTest.java b/src/test/java/vk/edu/tests/SearchMusicTest.java
+--- a/src/test/java/vk/edu/tests/SearchMusicTest.java	
++++ b/src/test/java/vk/edu/tests/SearchMusicTest.java	
+@@ -1,25 +1,16 @@
+ package vk.edu.tests;
+ 
+-import com.codeborne.selenide.SelenideElement;
+ import org.junit.jupiter.api.Assertions;
+ import org.junit.jupiter.api.Test;
+ import vk.edu.page.MusicPage;
+ 
+-import static com.codeborne.selenide.Selenide.$x;
+-import static com.codeborne.selenide.Selenide.sleep;
+-
+-public class SearchMusicTest extends BaseTest{
++public class SearchMusicTest extends BaseTest {
+     @Test
+-    public void checkSearchMusic(){
++    public void checkSearchMusic() {
+         MusicPage musicPage = new MusicPage();
+-        SelenideElement search = $x(".//input[@data-tsid='inner_input']");
+-        search.click();
+-        search.setValue("Поезда");
+-        search.pressEnter();
+-        $x(".//button[@data-payload='artistName=Женя Трофимов']").click();
+-        //sleep(49000); //если не хочется слушать
+-        sleep(80000);
+-        $x("//button[@class='pause __active']").click();
+-        Assertions.assertTrue($x(".//span[@title='Поезда']").isDisplayed());
++        String nameSong = "Поезда";
++        String artist = "Женя Трофимов";
++        musicPage.searchMusic(nameSong, artist);
++        Assertions.assertEquals(artist, musicPage.searchMusic(nameSong, artist), "Искомый артист не совпадает с найденным");
+     }
+ }
+Index: src/test/java/vk/edu/page/MainPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.page;\n\nimport com.codeborne.selenide.SelenideElement;\nimport org.junit.jupiter.api.Test;\n\nimport static com.codeborne.selenide.Condition.exist;\nimport static com.codeborne.selenide.Condition.visible;\nimport static com.codeborne.selenide.Selenide.$x;\n\npublic class MainPage {\n    private static final String LOGIN = \"technopol41\";\n    private static final String PASSWORD = \"technopolisPassword\";\n\n    private final static SelenideElement UPLOAD_PHOTO = $x(\".//input[@class='html5-upload-link']\");\n    private final static SelenideElement POST_BUTTON = $x(\".//button[@class='dropdown-button__qx55h']\");\n    private final static SelenideElement NAVBAR_MAIN_PAGE = $x(\".//div[@class='nav-side __navigation __user-main']\");\n\n    public MainPage(String url){\n        authenticate(url);\n        checkMainPage();\n    }\n    public void authenticate(String url){\n        LoginPage loginpage = new LoginPage(url);\n        loginpage.setValueOnFieldEmail(LOGIN);\n        loginpage.setValueOnFieldPassword(PASSWORD);\n        loginpage.enter();\n    }\n\n    @Test\n    public void checkMainPage(){\n        UPLOAD_PHOTO.shouldBe(exist.because(\"Нет блока ссылки на загрузку фото с главной страницы\"));\n        POST_BUTTON.shouldBe(exist.because(\"Нет кнопки публикации на главной странице\"));\n        NAVBAR_MAIN_PAGE.shouldBe(visible.because(\"Нет навбара на главной странице\"));\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/page/MainPage.java b/src/test/java/vk/edu/page/MainPage.java
+--- a/src/test/java/vk/edu/page/MainPage.java	
++++ b/src/test/java/vk/edu/page/MainPage.java	
+@@ -8,28 +8,24 @@
+ import static com.codeborne.selenide.Selenide.$x;
+ 
+ public class MainPage {
+-    private static final String LOGIN = "technopol41";
+-    private static final String PASSWORD = "technopolisPassword";
+ 
+     private final static SelenideElement UPLOAD_PHOTO = $x(".//input[@class='html5-upload-link']");
+     private final static SelenideElement POST_BUTTON = $x(".//button[@class='dropdown-button__qx55h']");
+-    private final static SelenideElement NAVBAR_MAIN_PAGE = $x(".//div[@class='nav-side __navigation __user-main']");
++    private final static SelenideElement NAVBAR_MAIN_PAGE = $x("//div[@class='nav-side __navigation __user-main']");
++    private final static SelenideElement PROFILE_FUNCTIONS = $x("//button[@aria-label='Настройки профиля']");
++    private final static SelenideElement FIRST_LOG_OUT_BUTTON = $x(".//div/a[@data-l='t,logout']");
++    private final static SelenideElement SECOND_LOG_OUT_BUTTON = $x(".//div/input[@data-l='t,logout']");
+ 
+-    public MainPage(String url){
+-        authenticate(url);
++    public MainPage() {
++        LoginPage loginPage = new LoginPage();
+         checkMainPage();
+     }
+-    public void authenticate(String url){
+-        LoginPage loginpage = new LoginPage(url);
+-        loginpage.setValueOnFieldEmail(LOGIN);
+-        loginpage.setValueOnFieldPassword(PASSWORD);
+-        loginpage.enter();
+-    }
+ 
+     @Test
+-    public void checkMainPage(){
++    public boolean checkMainPage() {
+         UPLOAD_PHOTO.shouldBe(exist.because("Нет блока ссылки на загрузку фото с главной страницы"));
+         POST_BUTTON.shouldBe(exist.because("Нет кнопки публикации на главной странице"));
+         NAVBAR_MAIN_PAGE.shouldBe(visible.because("Нет навбара на главной странице"));
++        return true;
+     }
+ }
+Index: src/test/java/vk/edu/page/ProfilePage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.page;\n\nimport com.codeborne.selenide.SelenideElement;\nimport org.junit.jupiter.api.Test;\n\nimport static com.codeborne.selenide.Condition.exist;\nimport static com.codeborne.selenide.Condition.visible;\nimport static com.codeborne.selenide.Selenide.$x;\n\npublic class ProfilePage {\n    private final static SelenideElement PROFILE_HEADER = $x(\".//div[@class='profile-cover_img']\");\n    private final static SelenideElement PHOTO_BY_PROFILE = $x(\".//input[@name='photo']\");\n    private final static SelenideElement GROUP_MAIN_PHOTO = $x(\".//div[@class='portlet group-main-portlet __photo']\");\n\n\n    public ProfilePage(){\n        $x(\".//div[@class='tico ellip']\").click();\n        checkProfilePage();\n    }\n\n    @Test\n    public void checkProfilePage(){\n        PROFILE_HEADER.shouldBe(visible.because(\"Отсутствует блок шапки профиля\"));\n        PHOTO_BY_PROFILE.shouldBe(exist.because(\"Отсутствует блок с фото пользователя\"));\n        GROUP_MAIN_PHOTO.shouldBe(visible.because(\"Отсутствует блок с группой фотографий бользователей\"));\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/page/ProfilePage.java b/src/test/java/vk/edu/page/ProfilePage.java
+--- a/src/test/java/vk/edu/page/ProfilePage.java	
++++ b/src/test/java/vk/edu/page/ProfilePage.java	
+@@ -13,13 +13,18 @@
+     private final static SelenideElement GROUP_MAIN_PHOTO = $x(".//div[@class='portlet group-main-portlet __photo']");
+ 
+ 
+-    public ProfilePage(){
++    public ProfilePage() {
++        LoginPage loginPage = new LoginPage();
+         $x(".//div[@class='tico ellip']").click();
+         checkProfilePage();
+     }
+ 
++    public boolean checkUser() {
++        return ($x(".//*[contains(//*[text()='technopol41 technopol41'], 'technopol41 technopol41')]")).isDisplayed();
++    }
++
+     @Test
+-    public void checkProfilePage(){
++    public void checkProfilePage() {
+         PROFILE_HEADER.shouldBe(visible.because("Отсутствует блок шапки профиля"));
+         PHOTO_BY_PROFILE.shouldBe(exist.because("Отсутствует блок с фото пользователя"));
+         GROUP_MAIN_PHOTO.shouldBe(visible.because("Отсутствует блок с группой фотографий бользователей"));
+Index: src/test/java/vk/edu/page/MusicPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.page;\n\nimport com.codeborne.selenide.SelenideElement;\nimport org.junit.jupiter.api.Test;\n\nimport static com.codeborne.selenide.Condition.exist;\nimport static com.codeborne.selenide.Condition.visible;\nimport static com.codeborne.selenide.Selenide.$x;\n\npublic class MusicPage{\n    private static final SelenideElement FIELD_SEARCH_MUSIC = $x(\".//input[@data-tsid='inner_input']\");\n    private static final SelenideElement MUSIC_PLAYER_CONTROLS = $x(\".//div[@class='toolbar-music-layer_offset-fix scroll-modal-indent']\");\n    private static final SelenideElement NAVIGATION_MUSIC_MENU = $x(\".//div[@class='content-container']\");\n    public MusicPage(){\n        $x(\"//*[@id='music_toolbar_button']\").click();\n        checkMusicPage();\n    }\n\n    @Test\n    public void checkMusicPage(){\n        FIELD_SEARCH_MUSIC.shouldBe(visible.because(\"Отсутствует поле для поиска музыки\"));\n        MUSIC_PLAYER_CONTROLS.shouldBe(exist.because(\"Нет панели управления мультимедией\"));\n        NAVIGATION_MUSIC_MENU.shouldBe(exist.because(\"Отсутствует навигационная панель раздела музыки\"));\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/page/MusicPage.java b/src/test/java/vk/edu/page/MusicPage.java
+--- a/src/test/java/vk/edu/page/MusicPage.java	
++++ b/src/test/java/vk/edu/page/MusicPage.java	
+@@ -3,21 +3,54 @@
+ import com.codeborne.selenide.SelenideElement;
+ import org.junit.jupiter.api.Test;
+ 
++import java.util.Objects;
++
+ import static com.codeborne.selenide.Condition.exist;
+ import static com.codeborne.selenide.Condition.visible;
+ import static com.codeborne.selenide.Selenide.$x;
++import static com.codeborne.selenide.Selenide.sleep;
+ 
+-public class MusicPage{
++public class MusicPage {
++    private static final SelenideElement PLAY_BUTTON = $x("//button[@class='play __active']");
++    private static final SelenideElement PAUSE_BUTTON = $x("//button[@class='pause __active']");
++    private static final SelenideElement MUSIC_BUTTON = $x("//*[@id='music_toolbar_button']");
+     private static final SelenideElement FIELD_SEARCH_MUSIC = $x(".//input[@data-tsid='inner_input']");
+     private static final SelenideElement MUSIC_PLAYER_CONTROLS = $x(".//div[@class='toolbar-music-layer_offset-fix scroll-modal-indent']");
+     private static final SelenideElement NAVIGATION_MUSIC_MENU = $x(".//div[@class='content-container']");
+-    public MusicPage(){
+-        $x("//*[@id='music_toolbar_button']").click();
++    private static final SelenideElement PLAY_PROGRESS = $x(".//wm-player-duration[@data-l='t,player']");
++    private static final SelenideElement SEARCH_FIELD = $x(".//input[@data-tsid='inner_input']");
++    private static final SelenideElement FIRST_PLAYBUTTON_ON_A_LIST = $x(".//button[@data-tsid='track_name']");
++    private static final SelenideElement CHECK_SPAN_ARTIST = $x(".//span[@class='artist' and @slot='info']");
++
++    public MusicPage() {
++        MainPage mainPage = new MainPage();
++        MUSIC_BUTTON.click();
+         checkMusicPage();
+     }
+ 
++    public void setPlayButton() {
++        PLAY_BUTTON.click();
++    }
++
++    public boolean checkPauseButton() {
++        sleep(5000);
++        return PAUSE_BUTTON.isDisplayed();
++    }
++
++    public double checkTimeForPlay() {
++        return Double.parseDouble(Objects.requireNonNull(PLAY_PROGRESS.getAttribute("current-time")));
++    }
++
++    public String searchMusic(String nameSong, String artist) {
++        SEARCH_FIELD.shouldBe(visible).click();
++        SEARCH_FIELD.setValue(nameSong + ' ' + artist);
++        SEARCH_FIELD.pressEnter();
++        FIRST_PLAYBUTTON_ON_A_LIST.shouldBe(exist).click();
++        return CHECK_SPAN_ARTIST.getText();
++    }
++
+     @Test
+-    public void checkMusicPage(){
++    public void checkMusicPage() {
+         FIELD_SEARCH_MUSIC.shouldBe(visible.because("Отсутствует поле для поиска музыки"));
+         MUSIC_PLAYER_CONTROLS.shouldBe(exist.because("Нет панели управления мультимедией"));
+         NAVIGATION_MUSIC_MENU.shouldBe(exist.because("Отсутствует навигационная панель раздела музыки"));
+Index: src/test/java/vk/edu/tests/LoginTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.tests;\n\nimport org.junit.jupiter.api.Assertions;\nimport org.junit.jupiter.api.Test;\nimport static com.codeborne.selenide.Selenide.$x;\n\npublic class LoginTest extends BaseTest{\n\n    @Test\n    public void sucLogin(){\n        Assertions.assertTrue(($x(\".//*[@id='hook_Block_Navigation']//*[@data-l='t,userPage']//*[text()='technopol41 technopol41']\")).isDisplayed());\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/tests/LoginTest.java b/src/test/java/vk/edu/tests/LoginTest.java
+--- a/src/test/java/vk/edu/tests/LoginTest.java	
++++ b/src/test/java/vk/edu/tests/LoginTest.java	
+@@ -2,12 +2,17 @@
+ 
+ import org.junit.jupiter.api.Assertions;
+ import org.junit.jupiter.api.Test;
++import vk.edu.page.LoginPage;
++
+ import static com.codeborne.selenide.Selenide.$x;
+ 
+-public class LoginTest extends BaseTest{
++public class LoginTest extends BaseTest {
+ 
+     @Test
+-    public void sucLogin(){
+-        Assertions.assertTrue(($x(".//*[@id='hook_Block_Navigation']//*[@data-l='t,userPage']//*[text()='technopol41 technopol41']")).isDisplayed());
++    public void unsuccessLogin() {
++        String login = "fjewkfnaifnaskd";
++        String passwd = "длжтфлоадтывф6156+51651";
++        loginPage.authenticate(login, passwd);
++        Assertions.assertEquals("Неправильно указан логин и/или пароль", loginPage.redSubscript());
+     }
+ }
+\ No newline at end of file
+Index: src/test/java/vk/edu/tests/BaseTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.tests;\n\nimport com.codeborne.selenide.Configuration;\nimport com.codeborne.selenide.Selenide;\nimport org.junit.jupiter.api.AfterEach;\nimport org.junit.jupiter.api.BeforeEach;\n\nimport vk.edu.page.MainPage;\n\n\nabstract public class BaseTest {\n    private final static String BASE_URL = \"https://ok.ru/\";\n    public void setUp() {\n        Configuration.baseUrl = BASE_URL;\n        Configuration.browser = \"chrome\";\n    }\n\n    @BeforeEach\n    public void init(){\n        setUp();\n        MainPage mainPage = new MainPage(BASE_URL);\n    }\n\n    @AfterEach\n    public void tearDown(){\n        Selenide.closeWebDriver();\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/tests/BaseTest.java b/src/test/java/vk/edu/tests/BaseTest.java
+--- a/src/test/java/vk/edu/tests/BaseTest.java	
++++ b/src/test/java/vk/edu/tests/BaseTest.java	
+@@ -5,24 +5,27 @@
+ import org.junit.jupiter.api.AfterEach;
+ import org.junit.jupiter.api.BeforeEach;
+ 
+-import vk.edu.page.MainPage;
++import vk.edu.page.LoginPage;
+ 
+ 
+ abstract public class BaseTest {
+-    private final static String BASE_URL = "https://ok.ru/";
++    private static final String BASE_URL = "https://ok.ru/";
++    protected static final LoginPage loginPage = new LoginPage(BASE_URL);
++
+     public void setUp() {
++        LoginPage loginPage = new LoginPage(BASE_URL);
+         Configuration.baseUrl = BASE_URL;
+         Configuration.browser = "chrome";
++
+     }
+ 
+     @BeforeEach
+-    public void init(){
++    public void init() {
+         setUp();
+-        MainPage mainPage = new MainPage(BASE_URL);
+     }
+ 
+     @AfterEach
+-    public void tearDown(){
++    public void tearDown() {
+         Selenide.closeWebDriver();
+     }
+ }
+\ No newline at end of file
+Index: src/test/java/vk/edu/page/LoginPage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.page;\n\nimport com.codeborne.selenide.Selenide;\nimport com.codeborne.selenide.SelenideElement;\nimport org.junit.jupiter.api.Test;\nimport org.openqa.selenium.By;\n\nimport static com.codeborne.selenide.Condition.visible;\nimport static com.codeborne.selenide.Selenide.$;\n\npublic class LoginPage{\n\n    private static final SelenideElement FIELD_EMAIL = $(By.name(\"st.email\"));\n    private static final SelenideElement FIELD_PASSWD = $(By.name(\"st.password\"));\n    private static final SelenideElement BUTTON_LOGIN = $(By.xpath(\".//div/input[@value='Войти в Одноклассники']\"));\n    public LoginPage(String url){\n        Selenide.open(url);\n        checkLoginPage();\n    }\n\n    public void setValueOnFieldEmail(String email){\n        FIELD_EMAIL.click();\n        FIELD_EMAIL.setValue(email);\n    }\n    public void setValueOnFieldPassword(String password){\n        FIELD_PASSWD.click();\n        FIELD_PASSWD.setValue(password);\n    }\n\n    public void enter(){\n        BUTTON_LOGIN.click();\n    }\n\n    @Test\n    public void checkLoginPage(){\n        FIELD_EMAIL.shouldBe(visible.because(\"Не найдено поле email\"));\n        FIELD_PASSWD.shouldBe(visible.because(\"Не найдено поле password\"));\n        BUTTON_LOGIN.shouldBe(visible.because(\"Нет кнопки входа на страничку\"));\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/page/LoginPage.java b/src/test/java/vk/edu/page/LoginPage.java
+--- a/src/test/java/vk/edu/page/LoginPage.java	
++++ b/src/test/java/vk/edu/page/LoginPage.java	
+@@ -3,39 +3,46 @@
+ import com.codeborne.selenide.Selenide;
+ import com.codeborne.selenide.SelenideElement;
+ import org.junit.jupiter.api.Test;
+-import org.openqa.selenium.By;
+ 
++import static com.codeborne.selenide.Condition.exist;
+ import static com.codeborne.selenide.Condition.visible;
+-import static com.codeborne.selenide.Selenide.$;
++import static com.codeborne.selenide.Selenide.$x;
+ 
+-public class LoginPage{
++public class LoginPage {
++    private static final String BASE_LOGIN = "technopol41";
++    private static final String BASE_PASSWORD = "technopolisPassword";
++    private static final SelenideElement FIELD_EMAIL = $x(".//input[@name='st.email']");
++    private static final SelenideElement FIELD_PASSWD = $x(".//input[@name='st.password']");
++    private static final SelenideElement BUTTON_LOGIN = $x(".//div/input[@value='Войти в Одноклассники']");
++    private static final SelenideElement REDSUBSCRIPT = $x(".//div[@class='input-e login_error']");
+ 
+-    private static final SelenideElement FIELD_EMAIL = $(By.name("st.email"));
+-    private static final SelenideElement FIELD_PASSWD = $(By.name("st.password"));
+-    private static final SelenideElement BUTTON_LOGIN = $(By.xpath(".//div/input[@value='Войти в Одноклассники']"));
+-    public LoginPage(String url){
++    public LoginPage(String url) {
+         Selenide.open(url);
+         checkLoginPage();
+     }
+ 
+-    public void setValueOnFieldEmail(String email){
+-        FIELD_EMAIL.click();
++    public LoginPage() {
++        checkLoginPage();
++        authenticate(BASE_LOGIN, BASE_PASSWORD);
++    }
++
++    public void authenticate(String email, String password) {
++        FIELD_EMAIL.shouldBe(visible).click();
+         FIELD_EMAIL.setValue(email);
+-    }
+-    public void setValueOnFieldPassword(String password){
+-        FIELD_PASSWD.click();
++        FIELD_PASSWD.shouldBe(visible).click();
+         FIELD_PASSWD.setValue(password);
++        BUTTON_LOGIN.shouldBe(visible).click();
+     }
+ 
+-    public void enter(){
+-        BUTTON_LOGIN.click();
++    public String redSubscript() {
++        return REDSUBSCRIPT.getText();
+     }
+ 
+     @Test
+-    public void checkLoginPage(){
+-        FIELD_EMAIL.shouldBe(visible.because("Не найдено поле email"));
+-        FIELD_PASSWD.shouldBe(visible.because("Не найдено поле password"));
+-        BUTTON_LOGIN.shouldBe(visible.because("Нет кнопки входа на страничку"));
++    public void checkLoginPage() {
++        FIELD_EMAIL.shouldBe(exist.because("Не найдено поле email"));
++        FIELD_PASSWD.shouldBe(exist.because("Не найдено поле password"));
++        BUTTON_LOGIN.shouldBe(exist.because("Нет кнопки входа на страничку"));
+     }
+ 
+ }
+\ No newline at end of file
+Index: src/test/java/vk/edu/tests/ProfileTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.tests;\n\nimport org.junit.jupiter.api.Assertions;\nimport org.junit.jupiter.api.Test;\nimport vk.edu.page.ProfilePage;\nimport static com.codeborne.selenide.Selenide.$x;\n\npublic class ProfileTest extends BaseTest{\n    @Test\n    public void checkProfilePage() throws InterruptedException {\n        ProfilePage profilePage = new ProfilePage();\n        Thread.sleep(5000);\n        Assertions.assertTrue(($x(\".//*[contains(//*[text()='technopol41 technopol41'], 'technopol41 technopol41')]\")).isDisplayed());\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/tests/ProfileTest.java b/src/test/java/vk/edu/tests/ProfileTest.java
+--- a/src/test/java/vk/edu/tests/ProfileTest.java	
++++ b/src/test/java/vk/edu/tests/ProfileTest.java	
+@@ -3,13 +3,12 @@
+ import org.junit.jupiter.api.Assertions;
+ import org.junit.jupiter.api.Test;
+ import vk.edu.page.ProfilePage;
+-import static com.codeborne.selenide.Selenide.$x;
++
+ 
+-public class ProfileTest extends BaseTest{
++public class ProfileTest extends BaseTest {
+     @Test
+-    public void checkProfilePage() throws InterruptedException {
++    public void checkProfilePage() {
+         ProfilePage profilePage = new ProfilePage();
+-        Thread.sleep(5000);
+-        Assertions.assertTrue(($x(".//*[contains(//*[text()='technopol41 technopol41'], 'technopol41 technopol41')]")).isDisplayed());
++        Assertions.assertTrue(profilePage.checkUser());
+     }
+ }
+\ No newline at end of file
+Index: src/test/java/vk/edu/tests/MusicTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.tests;\n\nimport com.codeborne.selenide.SelenideElement;\nimport org.junit.jupiter.api.Assertions;\nimport org.junit.jupiter.api.Test;\nimport vk.edu.page.MusicPage;\n\nimport static com.codeborne.selenide.Selenide.$x;\nimport static com.codeborne.selenide.Selenide.sleep;\n\npublic class MusicTest  extends BaseTest{\n    @Test\n    public void checkMusic(){\n        MusicPage musicPage = new MusicPage();\n        $x(\"//button[@class='play __active']\").click();\n        sleep(5000);\n        Assertions.assertTrue($x(\"//button[@class='pause __active']\").isDisplayed());\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/vk/edu/tests/MusicTest.java b/src/test/java/vk/edu/tests/MusicTest.java
+--- a/src/test/java/vk/edu/tests/MusicTest.java	
++++ b/src/test/java/vk/edu/tests/MusicTest.java	
+@@ -8,12 +8,14 @@
+ import static com.codeborne.selenide.Selenide.$x;
+ import static com.codeborne.selenide.Selenide.sleep;
+ 
+-public class MusicTest  extends BaseTest{
++public class MusicTest extends BaseTest {
+     @Test
+-    public void checkMusic(){
++    public void checkMusic() {
+         MusicPage musicPage = new MusicPage();
+-        $x("//button[@class='play __active']").click();
+-        sleep(5000);
+-        Assertions.assertTrue($x("//button[@class='pause __active']").isDisplayed());
++        musicPage.setPlayButton();
++        Assertions.assertAll("Group test play music",
++                () -> Assertions.assertTrue(musicPage.checkPauseButton(), "Pause button should be visible on display"),
++                () -> Assertions.assertNotEquals(0.0, musicPage.checkTimeForPlay(), "Time can'wt be zero")
++        );
+     }
+ }
+\ No newline at end of file
+Index: .idea/misc.xml
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/misc.xml	
+@@ -0,0 +1,9 @@
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="FrameworkDetectionExcludesConfiguration">
++    <file type="web" url="file://$PROJECT_DIR$" />
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="Javarush SDK" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	
++++ b/.idea/.gitignore	
+@@ -0,0 +1,8 @@
++# Default ignored files
++/shelf/
++/workspace.xml
++# Editor-based HTTP Client requests
++/httpRequests/
++# Datasource local storage ignored files
++/dataSources/
++/dataSources.local.xml
+Index: .idea/gradle.xml
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/gradle.xml	
+@@ -0,0 +1,16 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
++  <component name="GradleSettings">
++    <option name="linkedExternalProjectsSettings">
++      <GradleProjectSettings>
++        <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="modules">
++          <set>
++            <option value="$PROJECT_DIR$" />
++          </set>
++        </option>
++      </GradleProjectSettings>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	
++++ b/.idea/vcs.xml	
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file

@@ -3,6 +3,7 @@ package vk.edu.tests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import vk.edu.elements.HeaderElement;
 import vk.edu.page.MusicPage;
 
 public class MusicTest extends BaseTest {

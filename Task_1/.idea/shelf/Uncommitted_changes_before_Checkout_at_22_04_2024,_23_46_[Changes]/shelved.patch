@@ -1,0 +1,17 @@
+Index: ../Task_2/src/test/java/vk/edu/tests/BaseTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package vk.edu.tests;\n\nimport com.codeborne.selenide.Configuration;\nimport com.codeborne.selenide.Selenide;\nimport org.junit.jupiter.api.AfterEach;\nimport org.junit.jupiter.api.BeforeEach;\n\n\nimport org.junit.jupiter.params.provider.CsvFileSource;\nimport vk.edu.page.LoginPage;\n\n\nabstract public class BaseTest {\n    private static final String BASE_URL = \"https://ok.ru/\";\n    protected static final LoginPage loginPage = new LoginPage(BASE_URL);\n\n    public void setUp() {\n        LoginPage loginPage = new LoginPage(BASE_URL);\n        Configuration.baseUrl = BASE_URL;\n        Configuration.browser = \"chrome\";\n\n    }\n\n    @BeforeEach\n    public void init() {\n        setUp();\n    }\n\n    @AfterEach\n    public void tearDown() {\n        Selenide.closeWebDriver();\n    }\n}
+===================================================================
+diff --git a/../Task_2/src/test/java/vk/edu/tests/BaseTest.java b/../Task_2/src/test/java/vk/edu/tests/BaseTest.java
+--- a/../Task_2/src/test/java/vk/edu/tests/BaseTest.java	
++++ b/../Task_2/src/test/java/vk/edu/tests/BaseTest.java	
+@@ -6,7 +6,7 @@
+ import org.junit.jupiter.api.BeforeEach;
+ 
+ 
+-import org.junit.jupiter.params.provider.CsvFileSource;
++
+ import vk.edu.page.LoginPage;
+ 
+ 

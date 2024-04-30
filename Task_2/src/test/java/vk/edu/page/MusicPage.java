@@ -1,7 +1,7 @@
 package vk.edu.page;
 
 import com.codeborne.selenide.SelenideElement;
-import org.junit.jupiter.api.Test;
+import vk.edu.elements.HeaderElement;
 
 import java.util.Objects;
 
@@ -23,8 +23,9 @@ public class MusicPage {
     private static final SelenideElement CHECK_SPAN_ARTIST = $x(".//span[@class='artist' and @slot='info']");
 
     public MusicPage() {
-        MainPage mainPage = new MainPage();
-        MUSIC_BUTTON.click();
+        LoginPage loginPage = new LoginPage();
+        HeaderElement header = new HeaderElement();
+        header.goTo(MUSIC_BUTTON);
         checkMusicPage();
     }
 
@@ -50,7 +51,6 @@ public class MusicPage {
         return CHECK_SPAN_ARTIST.getText();
     }
 
-    @Test
     public void checkMusicPage() {
         FIELD_SEARCH_MUSIC.shouldBe(visible.because("Отсутствует поле для поиска музыки"));
         MUSIC_PLAYER_CONTROLS.shouldBe(exist.because("Нет панели управления мультимедией"));

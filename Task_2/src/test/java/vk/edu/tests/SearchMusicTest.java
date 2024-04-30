@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import vk.edu.elements.HeaderElement;
 import vk.edu.page.MusicPage;
 
 import static com.codeborne.selenide.Selenide.$x;
@@ -15,7 +16,7 @@ public class SearchMusicTest extends BaseTest {
     @Disabled("Написана новая версия теста")
     @Test
     public void checkSearchMusic() {
-        MusicPage musicPage = new MusicPage();
+       // MusicPage musicPage = new MusicPage();
         SelenideElement search = $x(".//input[@data-tsid='inner_input']");
         search.click();
         search.setValue("Поезда");
