@@ -1,5 +1,9 @@
 package vk.edu.tests;
 
+import com.codeborne.selenide.WebDriverRunner;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.AfterAll;
@@ -13,6 +17,14 @@ import vk.edu.page.LoginPage;
 abstract public class BaseTest {
     private final static String BASE_URL = "https://ok.ru/";
     protected final static LoginPage loginPage = new LoginPage(BASE_URL);
+
+    static {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+    }
 
     @BeforeAll
     public static void setUp() {
