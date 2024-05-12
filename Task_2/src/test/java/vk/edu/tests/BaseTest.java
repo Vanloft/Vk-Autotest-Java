@@ -24,6 +24,8 @@ abstract public class BaseTest {
             options.addArguments("--disable-gpu");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-setuid-sandbox");
+            options.addArguments("--remote-debugging-port=9222");
 
             Configuration.baseUrl = BASE_URL;
             Configuration.browser = "chrome";
