@@ -17,19 +17,23 @@ abstract public class BaseTest {
 
     @BeforeAll
     public static void setUp() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized"); // open Browser in maximized mode
-        options.addArguments("disable-infobars"); // disabling infobars
-        options.addArguments("--disable-extensions"); // disabling extensions
-        options.addArguments("--disable-gpu"); // applicable to windows os only
-        options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
-        options.addArguments("--no-sandbox"); // Bypass OS security model
+        try {
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
 
-        Configuration.baseUrl = BASE_URL;
-        Configuration.browser = "chrome";
-        Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);;
+            Configuration.baseUrl = BASE_URL;
+            Configuration.browser = "chrome";
+            Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
 
+            System.out.println("WebDriver успешно настроен и запущен.");
+        } catch (Exception e) {
+            System.err.println("Ошибка при настройке WebDriver: " + e.getMessage());
+            throw e;
+        }
         LoginPage logPage = new LoginPage(BASE_URL);
     }
 
