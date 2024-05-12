@@ -28,7 +28,7 @@ abstract public class BaseTest {
 
         Configuration.baseUrl = BASE_URL;
         Configuration.browser = "chrome";
-        Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        Configuration.browserCapabilities.setCapability(ChromeOptions.CAPABILITY, options);;
 
         LoginPage logPage = new LoginPage(BASE_URL);
     }
